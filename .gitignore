@@ -1,0 +1,26 @@
+# Django ile ilgili
+*.pyc
+*.pyo
+__pycache__/
+db.sqlite3
+*.sqlite3
+
+# Ortam değişkenleri
+.env
+*.env
+
+# Sanal ortam
+venv/
+.venv/
+
+# IDE ve Editör Dosyaları
+.idea/
+.vscode/
+
+# Log ve önbellek dosyaları
+*.log
+*.pot
+*.pyc
+*.pyo
+*.so
+.DS_Store
