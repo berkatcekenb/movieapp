@@ -26,21 +26,32 @@
         <div class="osahan-slider">
           {% for movie in slider_movies %}
             <div class="osahan-slider-item">
-              <a href="{% url 'movie_details' movie.slug %}">
-                <div class="slider-card">
-                  <img src="{% static 'img/'|add:movie.image_cover %}" class="slider-img" alt="{{movie.title}}">
-                  <div class="slider-overlay">
-                    <div class="slider-content">
-                      <h2 class="slider-title">{{ movie.title }}</h2>
-                      <div class="slider-meta">
-                        <span class="slider-year">{{ movie.date|date:"Y" }}</span>
-                        <span class="slider-lang">{{ movie.language }}</span>
+              <div class="modern-slider-item">
+                <a href="{% url 'movie_details' movie.slug %}">
+                  <div class="slider-card">
+                    <div class="slider-img-container">
+                      <img src="{% static 'img/'|add:movie.image_cover %}" class="slider-img" alt="{{movie.title}}">
+                    </div>
+                    <div class="slider-overlay">
+                      <div class="slider-content">
+                        <div class="slider-rating">
+                          <i class="fas fa-star"></i>
+                          <span>{{ movie.rating|default:"New" }}</span>
+                        </div>
+                        <h2 class="slider-title">{{ movie.title }}</h2>
+                        <div class="slider-meta">
+                          <span class="slider-year"><i class="fas fa-calendar"></i> {{ movie.date|date:"Y" }}</span>
+                          <span class="slider-lang"><i class="fas fa-language"></i> {{ movie.language }}</span>
+                        </div>
+                        <div class="slider-desc">{{ movie.description|truncatewords:25 }}</div>
+                        <div class="slider-button">
+                          <span class="btn btn-outline-light btn-sm">Watch Now</span>
+                        </div>
                       </div>
-                      <div class="slider-desc">{{ movie.description|truncatewords:25 }}</div>
                     </div>
                   </div>
-                </div>
-              </a>
+                </a>
+              </div>
             </div>
           {% endfor %}
         </div>
@@ -124,6 +135,10 @@
             autoplaySpeed: 3000,
             arrows: true,
             dots: true,
+            infinite: true,
+            speed: 500,
+            fade: false,
+            cssEase: 'ease-in-out',
             responsive: [
                 {
                     breakpoint: 768,

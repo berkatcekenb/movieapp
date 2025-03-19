@@ -1,8 +1,7 @@
 from django.db import models
 from django.core.validators import MinLengthValidator
-
-
-
+from .utils import optimize_slider_image
+import os
 
 class Genre(models.Model):
     name = models.CharField(max_length=50)
@@ -76,7 +75,22 @@ class Movie(models.Model):
     def __str__(self):
         return self.title
 
+    def save(self, *args, **kwargs):
+        is_new = self.pk is None
+        old_image = None
+        
+        if not is_new:
+            old_obj = Movie.objects.get(pk=self.pk)
+            old_image = old_obj.image_cover
 
+        # Normal kaydetme işlemini yap
+        super().save(*args, **kwargs)
+        
+        # Eğer yeni bir resim yüklendiyse veya resim değiştiyse optimize et
+        if old_image != self.image_cover or is_new:
+            if self.image_cover:
+                image_path = os.path.join('static', 'img', self.image_cover)  
+                optimize_slider_image(image_path)
 
 class Video(models.Model):
     title = models.CharField(max_length=200)
