@@ -21,6 +21,32 @@
       
       {% include 'partials/_topbar.html' %}
 
+      <!-- Slider Section -->
+      <div class="container-fluid mb-4">
+        <div class="osahan-slider">
+          {% for movie in slider_movies %}
+            <div class="osahan-slider-item">
+              <a href="{% url 'movie_details' movie.slug %}">
+                <div class="slider-card">
+                  <img src="{% static 'img/'|add:movie.image_cover %}" class="slider-img" alt="{{movie.title}}">
+                  <div class="slider-overlay">
+                    <div class="slider-content">
+                      <h2 class="slider-title">{{ movie.title }}</h2>
+                      <div class="slider-meta">
+                        <span class="slider-year">{{ movie.date|date:"Y" }}</span>
+                        <span class="slider-lang">{{ movie.language }}</span>
+                      </div>
+                      <div class="slider-desc">{{ movie.description|truncatewords:25 }}</div>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+      <!-- End Slider Section -->
+
       <div class="container-fluid">
         {% include 'partials/_slider.html' %}
 
@@ -85,4 +111,37 @@
   </div>
 </div>
 
+{% endblock %}
+
+{% block js_files %}
+<script>
+    $(document).ready(function(){
+        $('.osahan-slider').slick({
+            centerMode: true,
+            centerPadding: '15%',
+            slidesToShow: 1,
+            autoplay: true,
+            autoplaySpeed: 3000,
+            arrows: true,
+            dots: true,
+            responsive: [
+                {
+                    breakpoint: 768,
+                    settings: {
+                        centerMode: true,
+                        centerPadding: '40px',
+                        arrows: false
+                    }
+                },
+                {
+                    breakpoint: 480,
+                    settings: {
+                        centerMode: false,
+                        arrows: false
+                    }
+                }
+            ]
+        });
+    });
+</script>
 {% endblock %}

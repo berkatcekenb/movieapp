@@ -2,20 +2,37 @@
 *.pyc
 *.pyo
 __pycache__/
+*.py[cod]
+*$py.class
+
+# Veritabanı
 db.sqlite3
 *.sqlite3
+*.db
 
-# Ortam değişkenleri
+# Media ve Static dosyaları
+media/
+/static/
+staticfiles/
+
+# Ortam değişkenleri ve yerel ayarlar
 .env
 *.env
+local_settings.py
 
 # Sanal ortam
 venv/
 .venv/
+env/
+ENV/
 
 # IDE ve Editör Dosyaları
 .idea/
 .vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
 
 # Log ve önbellek dosyaları
 *.log
@@ -23,4 +40,20 @@ venv/
 *.pyc
 *.pyo
 *.so
-.DS_Store
+.Python
+*.bak
+.coverage
+coverage/
+htmlcov/
+
+# Yüklenen kullanıcı dosyaları
+avatars/
+uploads/
+
+# Derleme ve dağıtım
+dist/
+build/
+*.egg-info/
+
+# Node modülleri (eğer frontend framework kullanılıyorsa)
+node_modules/

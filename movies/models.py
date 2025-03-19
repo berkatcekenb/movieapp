@@ -86,6 +86,23 @@ class Video(models.Model):
     def __str__(self):
         return self.title
 
+class Comment(models.Model):
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='comments')
+    name = models.CharField(max_length=100)
+    email = models.EmailField(max_length=100) 
+    text = models.TextField()
+    rating = models.IntegerField(choices=[(i, f'{i} Star') for i in range(1,6)])
+    created_date = models.DateTimeField(auto_now_add=True)
+    active = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ['-created_date']
+        verbose_name = 'Yorum'
+        verbose_name_plural = 'Yorumlar'
+
+    def __str__(self):
+        return f'Comment by {self.name} on {self.movie}'
+
 
 
 
