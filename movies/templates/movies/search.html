@@ -1,0 +1,113 @@
+{% extends 'movies/base.html' %}
+{% load static %}
+
+{% block content %}
+<div id="wrapper">
+    {% include 'partials/_sidebar.html' %}
+    <div id="content-wrapper" class="d-flex flex-column">
+        <div id="content">
+            {% include 'partials/_topbar.html' %}
+            
+            <div class="container-fluid">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">
+                            {% if query %}
+                                "{{ query }}" için arama sonuçları
+                            {% else %}
+                                Film ve Kişi Arama
+                            {% endif %}
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <form method="get" class="mb-4">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="input-group">
+                                        <input type="text" name="q" class="form-control" 
+                                               value="{{ query }}" placeholder="Arama...">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary" type="submit">
+                                                <i class="fas fa-search"></i> Ara
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <select name="type" class="form-control" onchange="this.form.submit()">
+                                        <option value="all" {% if search_type == 'all' %}selected{% endif %}>Tümü</option>
+                                        <option value="movies" {% if search_type == 'movies' %}selected{% endif %}>Filmler</option>
+                                        <option value="actors" {% if search_type == 'actors' %}selected{% endif %}>Oyuncular</option>
+                                        <option value="directors" {% if search_type == 'directors' %}selected{% endif %}>Yönetmenler</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </form>
+
+                        {% if query %}
+                            {% if search_type == 'all' %}
+                                {% if results.movies %}
+                                    <h4 class="mt-4">Filmler</h4>
+                                    <div class="row">
+                                        {% for movie in results.movies %}
+                                            <div class="col-xl-3 col-md-6 mb-4">
+                                                {% include 'partials/_movie.html' with movie=movie %}
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+
+                                {% if results.people %}
+                                    <h4 class="mt-4">Kişiler</h4>
+                                    <div class="row">
+                                        {% for person in results.people %}
+                                            <div class="col-xl-3 col-md-6 mb-4">
+                                                <div class="card border-0 shadow">
+                                                    <div class="card-body text-center">
+                                                        <img src="{% static 'img/'|add:person.image_name %}" 
+                                                             class="rounded-circle img-thumbnail mb-3" 
+                                                             style="width: 100px; height: 100px; object-fit: cover;">
+                                                        <h5 class="mb-1">{{ person.full_name }}</h5>
+                                                        <p class="text-muted small">{{ person.get_duty_type_display }}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            {% else %}
+                                <div class="row">
+                                    {% for result in results %}
+                                        <div class="col-xl-3 col-md-6 mb-4">
+                                            {% if search_type == 'movies' %}
+                                                {% include 'partials/_movie.html' with movie=result %}
+                                            {% else %}
+                                                <div class="card border-0 shadow">
+                                                    <div class="card-body text-center">
+                                                        <img src="{% static 'img/'|add:result.image_name %}" 
+                                                             class="rounded-circle img-thumbnail mb-3" 
+                                                             style="width: 100px; height: 100px; object-fit: cover;">
+                                                        <h5 class="mb-1">{{ result.full_name }}</h5>
+                                                        <p class="text-muted small">{{ result.get_duty_type_display }}</p>
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+
+                            {% if not results %}
+                                <div class="alert alert-info">
+                                    "{{ query }}" için sonuç bulunamadı.
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% include 'partials/_footer.html' %}
+    </div>
+</div>
+{% endblock %}
